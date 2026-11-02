@@ -11,19 +11,36 @@
 int main() 
 {
     char choice;
+   
+    int loop = 1; 
+    while (loop == 1) {
+        printf("==============\n");
+        printf("Math Tricks\n");
+        printf("==============\n");
+        printf("1 - Try out a Math Trick\n");
+        printf("2 - Simulate Multiple Cases\n");
+        printf("3 - Close Program\n");
+        printf("Input: ");
+        scanf(" %c", &choice);
 
-    printf("Try out a Tutorial: <1> \n");
-    printf("Enter Simulation: <2> \n");
-    scanf("%c", &choice);
-
-    switch (choice) {
-        case '1':
-            tutorial();
-            break;
-        case '2':
-            simulation();
-            break;
-    }
+        switch (choice) {
+            case '1':
+                tutorial();
+                break;
+            case '2':
+                simulation();
+                break;
+            case '3':
+                loop = 0; //loop exit condition
+                break;
+            default:
+                printf("===================\n");
+                printf("|INVALID INPUT|\n");
+                printf("===================\n");
+        }    
+    }     
 
     return 0;
 }
+
+

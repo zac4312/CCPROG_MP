@@ -30,7 +30,7 @@
 
     @return nothing, the function will immediately print the output
 */
-void root_sum() 
+void root_sim() 
 {
 
 }

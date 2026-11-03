@@ -5,10 +5,10 @@
 #include <ctype.h>
 
 /*  Function division_trick(), 
-    takes two integer parameters that act as <dividend> and <divisor>. splits the <dividend> into individual digits then 
-    checks and displays in both word and ascii(*) how many times the <divisor> fits into each digit of the <divisor>. 
-    Compiling the result of each digit into a single number results to the <quotient> that will also be printed.
-    function can be repeated till user exits.
+    takes two integer parameters that act as <dividend> and <divisor>. Splits the <dividend> into individual digits then 
+    checks and displays in both word and ascii(*) how many times the <divisor> fits into each digit of the <divisor>, 
+    adding the remainder to the next digit. Compiling the result of each digit into a single dividendber results to the 
+    <quotient> that will also be printed. function can be repeated till user exits.
 
     Pre-condition:
         - dividend and divisor must be positive integer
@@ -19,29 +19,37 @@
 void division_trick() 
 {
     int divisor, dividend;
-    int tens, ones; //for seperating the digits of the dividend
-    int remainder, base;
-
+    int remainder;
+    int i; //index for loop count    
+    int digit[10]; // array will fit all digits of the dividend. Upper limit: billions (billion limit cause of int limit at 2,147,483,647)
+    int length; // limits the loop to how many times the array was actually filled
+    length = 0; // init length
+    
     printf("Dividend = ");
     scanf("%d", &dividend);
+  
     printf("Divisor = ");
-    scanf("%d", &divisor);
+    scanf("%d", &divisor);    
+   
+    digit[0] = dividend; // initial loop will shorten the number until its only 1 digit, storing each 
+                    // iteration of the dividendber into digit[] starting with the original number;
 
-    // TODO: accomodate big digit dividend via loop:
-    // - while dividend != 0 { extend <%>|</> then dividend / base
-    // - think how to handle remainder
-    // loop <*> printing
+    for (i=1; dividend > 0 ; i++) { //repeats the loop until number can no longer be divided 
+        dividend /= 10; // removes the right most bit of every succeeding integer starting from digit[0]
+        digit[i] = dividend; // reult get stored to array
+        length = i; // keeps track of how many times a value was actually stored
+    }     
 
-    ones = dividend % 10;
-    tens = dividend / 10;
-    
-    ones /= divisor; 
-    remainder = ones % divisor;
-    tens = (tens + remainder)/divisor;
+    for (i=0; i < length ; i++) { //loops through the array based on how many time a value was added in the earlier for loop,
+                                  //then takes the right most digit, and replaces the current integer with said digit.
+       digit[i] %= 10;
+    }
 
-
+    for (i=0; i < length; i++) { //loops through the array based on how many time a value was added in the earlier for loop,
+                                 // does the division trick described in decsription. 
+      printf("index %d: %d\n", i, digit[i]);  
+    }
 }
-
 /*
     Function root_trick().
     takes two integer parameters that act as <radicand> and <index>. Assuming the radicand is a perfect root of the index,
@@ -68,7 +76,7 @@ void root_trick()
 {
     int radicand, index;
     int ones, tens; // for seperating the digits of the radicand
-    float precon_radicand, root, base; // check conditions
+    float precon_radicand, root, base; // for check conditions
     char loop, choice; // looping and program action conditions
 
     loop = 'Y';
@@ -83,7 +91,8 @@ void root_trick()
         precon_radicand = modff(pow(radicand, 1.0/index), &base); //checks if radicand is perfect root
                                                                   //gets the nth root of values and isolates the fractional part
         
-        if (precon_radicand == 0.00 && radicand > 0) {
+        if (radicand < 0) { printf("Please Enter a Number Greater than 0"); }
+        if (precon_radicand == 0.00) {
             ones = radicand % 10; 
             tens = radicand / 10;
     

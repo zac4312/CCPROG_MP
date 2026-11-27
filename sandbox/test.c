@@ -1,61 +1,84 @@
 #include <math.h>
 #include <stdio.h>
+#include <strings.h>
 
-void stars(int divisor, int quotient) 
-{
-    int i, j;
-    for (i = 0; i < quotient ; i++) { //prints a space based on how many groups there are
-        printf(" "); 
+int main() {
+    int radicand, index, i, sum, digit, result, hold, isolate;
+    int precon_radicand, nthPower; // for check conditions
+    char loop, choice, length; // looping and program action conditions
+    float nth; // 1/n power for radical operation
+    
+    loop = 'Y';
+    sum = 0;
+    while (loop == 'Y') {
+        printf("Radicand = ");
+        scanf("%d", &radicand);
+        printf("Index = ");
+        scanf("%d", &index);
         
-        for (j = 0; j < divisor ; j++) { //prints a * for how many there are in 1 group
-            printf("*");
-        }        
-    }     
-} 
+        nth = 1.00 / index;
+        precon_radicand = pow(radicand, nth);
+        
+        if (radicand < 0) { 
+            printf("Enter a Positive Radicand\n");  
+        }
+        if (index < 0) {
+            printf("Enter a Positive Index\n");  
+        }
+        if (index < 2) {
+            printf("Index Must at least be 2\n");  
+        }
+        if (radicand < 10) {
+            printf("Enter a 2-digit Radicand\n");  
+        }
+        
+        else {
 
-int main()
-{ 
-    int holder;
-    int i; //loop count    
-    int digit; // indevidual digits of the dividend
-    int length; // how many digits there are in the dividend  
-    int dividend, divisor, quotient, remainder;
-    int result;
-    int isolator; // removes the left most digit  
-    
-    // initialize values
-    remainder = 0;
-    result = 0;
-    
-    printf("Dividend = ");
-    scanf("%d", &dividend);
-  
-    printf("Divisor = ");
-    scanf("%d", &divisor);
-    
-    holder = dividend;  
-    for (i=1; holder!= 0; i++) { //divides dividend by 10 until it can no longer be divided
-        holder /= 10;
-        length = i; //length takes count
+            nthPower = precon_radicand;
+            for (i=2; i<=index; i++) {
+                nthPower *= precon_radicand;
+            }
+            
+            hold = radicand;
+            for (i=1; hold != 0; i++) {
+                hold /= 10;
+                length = i;
+            }
+            
+            isolate = radicand;
+            if (nthPower == radicand) {
+                for (i=0; i<length; i++) {
+                    digit = isolate % 10;
+                    printf("digit = %d", digit);
+                    sum += digit;
+                    isolate /= 10;
+                }
+
+                result = sum - index;
+
+                printf("%d root of %d\n", index, radicand);
+                printf("= Sum of Digits %d - %d\n",sum, index );
+                printf("= %d\n", result);
+
+            }
+        
+            else { 
+                printf("%d is not a perfect root of %d. No trick calculation executed\n", radicand, index); 
+            }
+        
+
+        }
+        
+        printf("\n");
+        printf("Do you want Another Sample? [Y/N]: ");
+        scanf("%c", &choice);
+
+        do {
+            printf("Invalid Input\n");
+            printf("Do you want Another Sample? [Y/N]: ");
+            scanf("%c", &choice);
+        }
+        while (choice != 'Y' || choice != 'N'); 
     }
-
-    for (i=1; i <= length; i++) {
-        digit = dividend / pow(10, length-i); //dividend is isolated to its left most digit
-        digit += remainder*10; //puts the remainder to the left most side of the next digit
-        
-        remainder = digit % divisor; 
-        quotient = digit / divisor; 
-
-        printf("%d = ", digit);
-        stars(divisor, quotient); printf(" ");
-        printf("= %d grouped, %d ungrouped to be included in the next digit\n", quotient, remainder);
-        
-        isolator = pow(10, length-i); 
-        dividend %= isolator; // removes the left most digit of the working number
-        result = result * 10 + quotient; // puts the quotients of each loop to the left of each other
-    }
-
-    printf("Answer = %d", result);
-   return 0;
 }
 
